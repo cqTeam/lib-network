@@ -45,7 +45,7 @@ class App : Application() {
     }
 }
 ```
-* [使用详情](https://github.com/cqTeam/lib-network/wiki/UseGuide)
+* [使用详情](https://github.com/cqTeam/lib-network/wiki/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 
 ### END
 
