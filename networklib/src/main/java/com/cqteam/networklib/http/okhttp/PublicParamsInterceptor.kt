@@ -19,7 +19,7 @@ import java.util.*
  * @Author:         koloces
  * @CreateDate:     2020/6/10 15:25
  */
-class PublicParamsInterceptor : Interceptor {
+internal class PublicParamsInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         if (!isNetworkReachable(NetWorkManager.getContent())!!) {

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
  * @Author:         koloces
  * @CreateDate:     2020/6/10 14:43
  */
-object OkHttpClientProvider {
+internal object OkHttpClientProvider {
     private var mClient: OkHttpClient? = null
 
     fun getClient() :OkHttpClient {

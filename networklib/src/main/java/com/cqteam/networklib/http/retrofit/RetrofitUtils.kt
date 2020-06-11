@@ -12,7 +12,7 @@ import java.util.*
  * @Author:         koloces
  * @CreateDate:     2020/6/10 15:53
  */
-object RetrofitUtils {
+internal object RetrofitUtils {
     private val retorfitMap = HashMap<String, Retrofit>()
     private var mainService: String? = null
 

@@ -73,4 +73,12 @@ object NetWorkManager {
     fun getRetrofit(service: String?): Retrofit{
         return RetrofitUtils.getRetrofit(service)
     }
+
+    fun<T> create(clazz: Class<T>):T {
+        return RetrofitUtils.getRetrofit().create(clazz)
+    }
+
+    fun <T> create(api:String,clazz: Class<T>):T{
+        return RetrofitUtils.getRetrofit(api).create(clazz)
+    }
 }

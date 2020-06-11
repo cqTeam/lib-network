@@ -12,7 +12,7 @@ import okhttp3.HttpUrl
  * @Author:         koloces
  * @CreateDate:     2020/6/10 15:46
  */
-class CookiesManager : CookieJar {
+internal class CookiesManager : CookieJar {
     private val cooks: PersistentCookieStore = PersistentCookieStore(NetWorkManager.getContent())
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
         return cooks[url]

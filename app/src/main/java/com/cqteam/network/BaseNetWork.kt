@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 class BaseNetWork : NetWorkHandle() {
-    private var service = NetWorkManager.getRetrofit().create(Api::class.java)
+    private var service = NetWorkManager.create(Api::class.java)
 
     interface Api{
         @GET("/common/getAppVersion")
