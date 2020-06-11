@@ -19,7 +19,7 @@ class NetWorkConfig private constructor(builder: Builder) {
     /**
      * 是否是debug 控制是否打印
      */
-    var isDebug = false
+    var isDebug = true
 
     //请求响应时间
     var connectTimeout = 30L
@@ -72,7 +72,7 @@ class NetWorkConfig private constructor(builder: Builder) {
     }
 
     class Builder(context : Context) {
-        internal var isDebug = false
+        internal var isDebug = true
         internal var mContext : Context = context
         internal var logger: LoggerProvider? = null
 
