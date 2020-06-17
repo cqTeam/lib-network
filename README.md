@@ -6,7 +6,7 @@
 * Retrofit
 ## 集成
 ### last-version:
-[![1.0.0](https://jitpack.io/v/cqTeam/lib-network.svg)](https://jitpack.io/#cqTeam/lib-network)
+[![](https://jitpack.io/v/cqTeam/lib-network.svg)](https://jitpack.io/#cqTeam/lib-network)
 * Add it in your root build.gradle at the end of repositories:
 ```
 allprojects {
