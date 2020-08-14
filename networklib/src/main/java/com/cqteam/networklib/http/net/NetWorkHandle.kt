@@ -6,6 +6,7 @@ import retrofit2.Call
 /**
  * 每个项目里应该都不一样，这里统一处理错误操作，如登录失效等操作
  */
+@Deprecated("过时不好用")
 abstract class NetWorkHandle {
 
     protected fun<T> doJob(call : Call<T>, listener : HttpResultListener<T>?){
