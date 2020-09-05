@@ -7,6 +7,13 @@ package com.cqteam.networklib.`interface`
  * @CreateDate:     2020/6/10 15:27
  */
 interface ParamsProvider {
-    fun bodyParams():HashMap<String,String>?
-    fun headerParams():HashMap<String,String>?
+    /**
+     * 传入参数为请求所携带的body（可能加密需要用到）
+     */
+    fun bodyParams(params : HashMap<String,String>):HashMap<String,String>?
+
+    /**
+     * 传入参数为请求所携带的body（可能加密需要用到）
+     */
+    fun headerParams(params : HashMap<String,String>):HashMap<String,String>?
 }

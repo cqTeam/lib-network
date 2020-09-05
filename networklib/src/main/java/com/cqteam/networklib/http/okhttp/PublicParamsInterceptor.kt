@@ -12,6 +12,7 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  *
@@ -35,8 +36,18 @@ internal class PublicParamsInterceptor : Interceptor {
             .removeHeader("User-Agent")
             .addHeader("User-Agent", getUserAgent())
 
+        val url = request.url
+
+        val queryParameterNames = url.queryParameterNames
+        val map =  HashMap<String,String>()
+        for (queryParameterName in queryParameterNames) {
+            url.queryParameter(queryParameterName)?.let {
+                map.put(queryParameterName,it)
+            }
+        }
+
         //添加公共请求头
-        var headerParams = NetWorkManager.getConfig().paramsProvider?.headerParams()
+        var headerParams = NetWorkManager.getConfig().paramsProvider?.headerParams(map)
         if (headerParams == null) {
             headerParams = HashMap()
         }
@@ -49,12 +60,12 @@ internal class PublicParamsInterceptor : Interceptor {
         }
 
         //添加公共请求体
-        var bodyParams = NetWorkManager.getConfig().paramsProvider?.bodyParams()
+        var bodyParams = NetWorkManager.getConfig().paramsProvider?.bodyParams(map)
         if (bodyParams == null) {
             bodyParams = HashMap()
         }
         val bodyIterator: Iterator<Map.Entry<String, String>> = bodyParams.entries.iterator()
-        val bodyBuilder = request.url.newBuilder()
+        val bodyBuilder = url.newBuilder()
         while (bodyIterator.hasNext()) {
             val next = bodyIterator.next()
             val key = next.key
