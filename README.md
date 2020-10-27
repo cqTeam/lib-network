@@ -19,7 +19,7 @@ allprojects {
 * Add the dependency to module build.gradle:
 ```
 dependencies {
-    implementation 'com.github.cqTeam:lib-network:v[last-version]'
+    implementation 'com.github.cqTeam:lib-network:[last-version]'
 }
 ```
 * Add the networkSecurityConfig to module AndroidManifest
