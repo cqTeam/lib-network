@@ -6,6 +6,7 @@ import com.cqteam.networklib.`interface`.LoadingProvider
 import com.cqteam.networklib.`interface`.LoggerProvider
 import com.cqteam.networklib.`interface`.ParamsProvider
 import com.cqteam.networklib.`interface`.ToastProvider
+import com.cqteam.networklib.http.utils.NetPrintUtil
 import java.io.File
 
 /**
@@ -23,8 +24,10 @@ class NetWorkConfig private constructor(builder: Builder) {
 
     //请求响应时间
     var connectTimeout = 30L
+
     //写入响应时间
     var writeTimeout = 30L
+
     //读取响应时间
     var readTimeout = 30L
 
@@ -34,18 +37,27 @@ class NetWorkConfig private constructor(builder: Builder) {
      */
     private var logger: LoggerProvider
 
-    var paramsProvider : ParamsProvider ?= null
+    var paramsProvider: ParamsProvider? = null
 
-    var cacheDirectory : File
+    var cacheDirectory: File
 
-    var toastProvider : ToastProvider ?= null
-    var loadingProvider : LoadingProvider ?= null
+    var toastProvider: ToastProvider? = null
+    var loadingProvider: LoadingProvider? = null
 
-    lateinit var mContext : Context
+    //是否缓存
+    internal var enableCache = true
+
+    //缓存文件夹大小
+    internal var cacheSize: Long = 10 * 1024 * 1024
+
+    //缓存时间
+    internal var maxAge: Long = 60
+
+    lateinit var mContext: Context
 
     init {
         isDebug = builder.isDebug
-        logger = if (builder.logger != null){
+        logger = if (builder.logger != null) {
             builder.logger!!
         } else {
             object : LoggerProvider {
@@ -63,6 +75,8 @@ class NetWorkConfig private constructor(builder: Builder) {
         cacheDirectory = builder.cacheDirectory!!
         toastProvider = builder.toastProvider
         loadingProvider = builder.loadingProvider
+        enableCache = builder.enableCache
+        cacheSize = builder.cacheSize
         mContext = builder.mContext
     }
 
@@ -71,28 +85,40 @@ class NetWorkConfig private constructor(builder: Builder) {
         return logger
     }
 
-    class Builder(context : Context) {
+    class Builder(context: Context) {
         internal var isDebug = true
-        internal var mContext : Context = context
+        internal var mContext: Context = context
         internal var logger: LoggerProvider? = null
 
         //请求响应时间
         internal var connectTimeout = 30L
+
         //写入响应时间
         internal var writeTimeout = 30L
+
         //读取响应时间
         internal var readTimeout = 30L
 
-        internal var paramsProvider : ParamsProvider ?= null
+        internal var paramsProvider: ParamsProvider? = null
 
-        internal var cacheDirectory : File ?= null
+        internal var cacheDirectory: File? = null
 
-        internal var toastProvider : ToastProvider ?= null
-        internal var loadingProvider : LoadingProvider ?= null
+        internal var toastProvider: ToastProvider? = null
+        internal var loadingProvider: LoadingProvider? = null
+
+        //是否缓存
+        internal var enableCache = true
+
+        //缓存文件夹大小
+        internal var cacheSize: Long = 10 * 1024 * 1024
+
+        //缓存时间
+        internal var maxAge: Int = 60
+
         /**
          * 添加吐司
          */
-        fun addToastProvider(toastProvider : ToastProvider ?) : Builder{
+        fun addToastProvider(toastProvider: ToastProvider?): Builder {
             this.toastProvider = toastProvider
             return this
         }
@@ -100,15 +126,39 @@ class NetWorkConfig private constructor(builder: Builder) {
         /**
          * 添加loading
          */
-        fun addLoadingProvider(loadingProvider : LoadingProvider ?) : Builder{
+        fun addLoadingProvider(loadingProvider: LoadingProvider?): Builder {
             this.loadingProvider = loadingProvider
             return this
         }
 
         /**
-         * 网络缓存文件夹
+         * 是否起用缓存(仅仅缓存GET请求)
          */
-        fun addCacheDirectory(cacheDirectory: File) : Builder{
+        fun enableCache(enable: Boolean): Builder {
+            this.enableCache = enable
+            return this
+        }
+
+        /**
+         * 缓存文件夹大小（默认 10M = 10 * 1024 *1024）
+         */
+        fun setCacheSize(size: Long): Builder {
+            this.cacheSize = size
+            return this
+        }
+
+        /**
+         * 缓存时间(单位 秒 默认60秒)
+         */
+        fun setMaxAge(maxAge: Int): Builder {
+            this.maxAge = maxAge
+            return this
+        }
+
+        /**
+         * 网络缓存文件夹（默认[Context.getCacheDir]）
+         */
+        fun addCacheDirectory(cacheDirectory: File): Builder {
             this.cacheDirectory = cacheDirectory
             return this
         }
@@ -116,39 +166,43 @@ class NetWorkConfig private constructor(builder: Builder) {
         /**
          * 请求的公共请求参数
          */
-        fun addParamsProvider(provider: ParamsProvider) : Builder{
+        fun addParamsProvider(provider: ParamsProvider): Builder {
             this.paramsProvider = provider
             return this
         }
 
-        fun addLogger(logger : LoggerProvider) : Builder{
+        fun addLogger(logger: LoggerProvider): Builder {
             this.logger = logger
             return this
         }
 
-        fun addConnectTimeout(time : Long) : Builder{
+        fun addConnectTimeout(time: Long): Builder {
             connectTimeout = time
             return this
         }
 
-        fun addWriteTimeout(time : Long) : Builder{
+        fun addWriteTimeout(time: Long): Builder {
             writeTimeout = time
             return this
         }
 
-        fun addReadTimeout(time : Long) : Builder{
+        fun addReadTimeout(time: Long): Builder {
             readTimeout = time
             return this
         }
 
-        fun isDebug(isDebug : Boolean) : Builder{
+        /**
+         * 默认true
+         */
+        fun isDebug(isDebug: Boolean): Builder {
             this.isDebug = isDebug
             return this
         }
 
-        fun build():NetWorkConfig{
-            if (cacheDirectory == null){
-                cacheDirectory = File(mContext.applicationContext.cacheDir.absolutePath, "NetWorkCacheFile")
+        fun build(): NetWorkConfig {
+            if (cacheDirectory == null) {
+                cacheDirectory =
+                    File(mContext.applicationContext.cacheDir.absolutePath, "NetWorkCacheFile")
             }
             return NetWorkConfig(this)
         }

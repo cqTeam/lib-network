@@ -1,6 +1,7 @@
 package com.cqteam.networklib.http.net
 
 import com.cqteam.networklib.NetWorkManager
+import com.cqteam.networklib.http.ThreadUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,7 +27,9 @@ object NetWorkHandleUtils {
     fun <T> doJob(call: Call<T>, isShowLoading: Boolean, listener: HttpResultListener<T>?) {
         GlobalScope.launch(Dispatchers.Main) {
             if (isShowLoading) {
-                NetWorkManager.getConfig().loadingProvider?.showLoading()
+                ThreadUtils.runOnUiThread {
+                    NetWorkManager.getConfig().loadingProvider?.showLoading()
+                }
             }
             listener?.onStart()
             val await = withContext(Dispatchers.IO) {
@@ -34,7 +37,9 @@ object NetWorkHandleUtils {
             }
             listener?.onFinish()
             if (isShowLoading) {
-                NetWorkManager.getConfig().loadingProvider?.dismissLoading()
+                ThreadUtils.runOnUiThread {
+                    NetWorkManager.getConfig().loadingProvider?.dismissLoading()
+                }
             }
             if (await.isSuccessful) {
                 val result = await.body()

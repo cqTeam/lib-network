@@ -1,5 +1,6 @@
 package com.cqteam.networklib.http.net
 import com.cqteam.networklib.NetWorkManager
+import com.cqteam.networklib.http.ThreadUtils
 import kotlinx.coroutines.Job
 
 interface HttpResultListener <T> {
@@ -22,7 +23,9 @@ interface HttpResultListener <T> {
      * -999是我自定义的错误,不用管直接看msg
      */
     fun onFailed(errCode: Int, msg: String?) {
-        NetWorkManager.getConfig().toastProvider?.toast(msg)
+        ThreadUtils.runOnUiThread {
+            NetWorkManager.getConfig().toastProvider?.toast(msg)
+        }
     }
 
     /**

@@ -3,6 +3,7 @@ package com.cqteam.networklib
 import android.content.Context
 import com.cqteam.networklib.http.retrofit.RetrofitUtils
 import retrofit2.Retrofit
+import java.io.File
 
 /**
  *
@@ -45,6 +46,13 @@ object NetWorkManager {
 
     fun getContent():Context{
         return mContext
+    }
+
+    /**
+     * 清除缓存
+     */
+    fun cleanCache() :Boolean{
+        return NetFileUtils.deleteDir(mConfig.cacheDirectory)
     }
 
     /**

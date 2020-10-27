@@ -2,6 +2,7 @@ package com.cqteam.networklib.http.retrofit
 
 import com.cqteam.networklib.NetWorkManager
 import com.cqteam.networklib.http.okhttp.OkHttpClientProvider
+import com.cqteam.networklib.http.utils.NetPrintUtil
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
@@ -57,7 +58,7 @@ internal object RetrofitUtils {
     fun getRetrofit(baseService: String?): Retrofit {
         val retrofit = retorfitMap[baseService]
         if (retrofit == null) {
-            NetWorkManager.getConfig().getLogger().log("请先配置Service")
+            NetPrintUtil.print("请先配置Service")
         }
         return retrofit!!
     }
