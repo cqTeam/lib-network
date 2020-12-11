@@ -27,8 +27,10 @@ class App : Application() {
         super.onCreate()
         val build = NetWorkConfig.Builder(this)
             .isDebug(true)
-            .enableCache(true)
-            .setMaxAge(60)
+            .enableCache(true)//是否起用缓存 仅对GET有效
+            .addCacheDirectory(this.cacheDir)//添加缓存文件夹
+            .setMaxAge(60)//缓存时间 秒
+            .setCacheSize(10 * 1024 * 1024)//设置缓存文件夹大小 10M
             .addLogger(object : LoggerProvider {
                 override fun log(message: String) {
                     Print.e("NetHttp", message)

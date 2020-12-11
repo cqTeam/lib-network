@@ -8,6 +8,7 @@ import android.webkit.WebSettings
 import androidx.annotation.RequiresPermission
 import com.cqteam.networklib.NetWorkManager
 import com.cqteam.networklib.http.utils.NetPrintUtil
+import com.cqteam.networklib.http.utils.NetStateUtils
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -24,7 +25,7 @@ import kotlin.collections.HashMap
 internal class PublicParamsInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        if (!isNetworkReachable(NetWorkManager.getContent())!!) {
+        if (!NetStateUtils.isNetworkReachable(NetWorkManager.getContent())!!) {
             NetPrintUtil.print("暂无网络可用")
             request = request.newBuilder()
                 .cacheControl(CacheControl.FORCE_CACHE) //无网络时只从缓存中读取
@@ -105,16 +106,5 @@ internal class PublicParamsInterceptor : Interceptor {
         return sb.toString()
     }
 
-    /**
-     * 判断网络是否可用
-     *
-     * @param context Context对象
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-    fun isNetworkReachable(context: Context): Boolean? {
-        val cm = context
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val current = cm.activeNetworkInfo ?: return false
-        return current.isAvailable
-    }
+
 }
