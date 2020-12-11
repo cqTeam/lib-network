@@ -22,12 +22,12 @@ internal object RetrofitUtils {
      * 第一个baseService是住要的,[RetrofitUtils]getRetrofit方法会返回这个主要的serivce的对象
      * @param baseService
      */
-    fun putApi(baseService: String?) {
+    fun putApi(baseService: String?) : Retrofit{
         if (mainService == null) {
             mainService = baseService
         }
         var retrofit = retorfitMap[baseService]
-        if (retrofit != null) return
+        if (retrofit != null) return retrofit
         retrofit = Retrofit.Builder()
             .baseUrl(baseService)
             .addConverterFactory(NullOnEmptyConverterFactory())
@@ -35,6 +35,7 @@ internal object RetrofitUtils {
             .client(OkHttpClientProvider.getClient())
             .build()
         retorfitMap[baseService!!] = retrofit
+        return retrofit
     }
 
     fun putBaseApi( baseApi : String){
@@ -56,10 +57,7 @@ internal object RetrofitUtils {
      * @return
      */
     fun getRetrofit(baseService: String?): Retrofit {
-        val retrofit = retorfitMap[baseService]
-        if (retrofit == null) {
-            NetPrintUtil.print("请先配置Service")
-        }
+        val retrofit = retorfitMap[baseService] ?: return putApi(baseService)
         return retrofit!!
     }
 }
