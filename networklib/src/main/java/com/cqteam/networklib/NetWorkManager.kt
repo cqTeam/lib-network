@@ -2,8 +2,6 @@ package com.cqteam.networklib
 
 import android.content.Context
 import com.cqteam.networklib.http.retrofit.RetrofitUtils
-import retrofit2.Retrofit
-import java.io.File
 
 /**
  *
@@ -12,19 +10,18 @@ import java.io.File
  * @CreateDate:     2020/6/10 14:43
  */
 object NetWorkManager {
-    private lateinit var mContext : Context
     private lateinit var mConfig : NetWorkConfig
+    private lateinit var baseApi:String
 
     /**
      * context
      * config
      * ip       请求IP
      */
-    fun init(config: NetWorkConfig,ip:String){
-        mContext = config.mContext
+    fun init(config: NetWorkConfig,baseApi:String){
         mConfig = config
-        if (ip.isNotEmpty()) {
-            putBaseApi(ip)
+        if (baseApi.isNotEmpty()) {
+            NetWorkManager.baseApi = baseApi
         }
     }
 
@@ -45,7 +42,7 @@ object NetWorkManager {
     }
 
     fun getContent():Context{
-        return mContext
+        return mConfig.mContext
     }
 
     /**
@@ -55,35 +52,13 @@ object NetWorkManager {
         return NetFileUtils.deleteDir(mConfig.cacheDirectory)
     }
 
-    /**
-     * 添加网络请求ip（如果项目中需要多个，则可以添加多个）
-     */
-    fun putApi(api : String){
-        RetrofitUtils.putApi(api)
-    }
-
-    /**
-     * 添加网络请求ip
-     */
-    fun putBaseApi(api : String){
-        RetrofitUtils.putBaseApi(api)
-    }
-
-    /**
-     * 获取Retrofit实体
-     */
-    fun getRetrofit(): Retrofit{
-        return RetrofitUtils.getRetrofit()
-    }
-    /**
-     * 根据ip获取Retrofit实体
-     */
-    fun getRetrofit(service: String?): Retrofit{
-        return RetrofitUtils.getRetrofit(service)
-    }
 
     fun<T> create(clazz: Class<T>):T {
-        return RetrofitUtils.getRetrofit().create(clazz)
+        if (baseApi.trim().isNotEmpty()){
+            return RetrofitUtils.getRetrofit(baseApi).create(clazz)
+        } else {
+            throw Exception("没有添加baseApi,请用带api参数的create方法！！")
+        }
     }
 
     fun <T> create(api:String,clazz: Class<T>):T{

@@ -6,7 +6,6 @@ import com.cqteam.networklib.`interface`.LoadingProvider
 import com.cqteam.networklib.`interface`.LoggerProvider
 import com.cqteam.networklib.`interface`.ParamsProvider
 import com.cqteam.networklib.`interface`.ToastProvider
-import com.cqteam.networklib.http.utils.NetPrintUtil
 import java.io.File
 
 /**
@@ -126,6 +125,7 @@ class NetWorkConfig private constructor(builder: Builder) {
         /**
          * 添加loading
          */
+        @Deprecated("弃用，项目里自己实现")
         fun addLoadingProvider(loadingProvider: LoadingProvider?): Builder {
             this.loadingProvider = loadingProvider
             return this

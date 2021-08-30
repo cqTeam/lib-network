@@ -3,6 +3,7 @@ import com.cqteam.networklib.NetWorkManager
 import com.cqteam.networklib.http.ThreadUtils
 import kotlinx.coroutines.Job
 
+@Deprecated("弃用，项目里自己实现")
 interface HttpResultListener <T> {
     /**
      * 需要显示做操作时重写该方法

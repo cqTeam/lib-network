@@ -1,11 +1,9 @@
 package com.cqteam.network
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import com.cqteam.networklib.NetWorkConfig
 import com.cqteam.networklib.NetWorkManager
-import com.cqteam.networklib.`interface`.LoadingProvider
 import com.cqteam.networklib.`interface`.LoggerProvider
 import com.cqteam.networklib.`interface`.ParamsProvider
 import java.lang.StringBuilder

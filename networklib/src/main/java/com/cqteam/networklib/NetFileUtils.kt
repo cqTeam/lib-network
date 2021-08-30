@@ -10,7 +10,8 @@ import java.io.File
  */
 internal object NetFileUtils {
     fun deleteDir(dir: File?): Boolean {
-        if (dir != null && dir.isDirectory) {
+        if (dir == null)return false
+        if (dir.isDirectory) {
             val children = dir.list()
             for (i in children.indices) {
                 val success = deleteDir(File(dir, children[i]))
@@ -19,6 +20,6 @@ internal object NetFileUtils {
                 }
             }
         }
-        return dir!!.delete()
+        return dir.delete()
     }
 }

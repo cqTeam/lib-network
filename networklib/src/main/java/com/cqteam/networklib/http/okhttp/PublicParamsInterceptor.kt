@@ -1,20 +1,14 @@
 package com.cqteam.networklib.http.okhttp
 
-import android.Manifest
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import android.webkit.WebSettings
-import androidx.annotation.RequiresPermission
 import com.cqteam.networklib.NetWorkManager
-import com.cqteam.networklib.http.utils.NetPrintUtil
+import com.cqteam.networklib.http.utils.LongPrintUtil
 import com.cqteam.networklib.http.utils.NetStateUtils
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import java.util.*
-import kotlin.collections.HashMap
 
 /**
  *
@@ -26,10 +20,11 @@ internal class PublicParamsInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         if (!NetStateUtils.isNetworkReachable(NetWorkManager.getContent())!!) {
-            NetPrintUtil.print("暂无网络可用")
+            LongPrintUtil.print("暂无网络可用")
             request = request.newBuilder()
                 .cacheControl(CacheControl.FORCE_CACHE) //无网络时只从缓存中读取
                 .build()
+            return chain.proceed(request)
         }
         val RequestBuilder = request.newBuilder()
         var build: Request
@@ -41,10 +36,10 @@ internal class PublicParamsInterceptor : Interceptor {
         val url = request.url
 
         val queryParameterNames = url.queryParameterNames
-        val map =  HashMap<String,String>()
+        val map = HashMap<String, String>()
         for (queryParameterName in queryParameterNames) {
             url.queryParameter(queryParameterName)?.let {
-                map.put(queryParameterName,it)
+                map.put(queryParameterName, it)
             }
         }
 

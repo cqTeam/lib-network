@@ -9,7 +9,7 @@ import com.cqteam.networklib.http.ThreadUtils
  * @Author:         koloces
  * @CreateDate:     2020/10/27 10:34
  */
-object NetPrintUtil {
+object LongPrintUtil {
     fun print(msg: String) {
         ThreadUtils.runOnUiThread {
             var msg = msg

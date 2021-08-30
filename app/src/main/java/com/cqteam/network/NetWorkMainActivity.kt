@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class NetWorkMainActivity : AppCompatActivity() {
 
-    private val api = NetWorkManager.getRetrofit().create(TestApi::class.java)
+    private val api = NetWorkManager.create(TestApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

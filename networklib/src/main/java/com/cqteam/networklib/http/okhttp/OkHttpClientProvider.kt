@@ -2,7 +2,7 @@ package com.cqteam.networklib.http.okhttp
 
 import com.cqteam.networklib.NetWorkManager
 import com.cqteam.networklib.http.okhttp.cache.CacheInterceptor
-import com.cqteam.networklib.http.utils.NetPrintUtil
+import com.cqteam.networklib.http.utils.LongPrintUtil
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,11 +30,9 @@ internal object OkHttpClientProvider {
     }
 
     private fun createClient():OkHttpClient{
-
-
         val logInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    NetPrintUtil.print(message)
+                    LongPrintUtil.print(message)
                 }
             })
         //log打印级别，决定了log显示的详细程度

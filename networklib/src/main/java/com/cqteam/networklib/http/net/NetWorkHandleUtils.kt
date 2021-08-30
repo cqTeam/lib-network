@@ -14,6 +14,7 @@ import retrofit2.Call
  * @Author:         koloces
  * @CreateDate:     2020/8/14 16:56
  */
+@Deprecated("弃用，项目里自己实现")
 object NetWorkHandleUtils {
     fun <T> doJob(call: Call<T>, listener: HttpResultListener<T>?) {
         doJob(call, false, listener)
@@ -35,12 +36,6 @@ object NetWorkHandleUtils {
             val await = withContext(Dispatchers.IO) {
                 call.execute()
             }
-            listener?.onFinish()
-            if (isShowLoading) {
-                ThreadUtils.runOnUiThread {
-                    NetWorkManager.getConfig().loadingProvider?.dismissLoading()
-                }
-            }
             if (await.isSuccessful) {
                 val result = await.body()
                 if (result != null) {
@@ -51,6 +46,12 @@ object NetWorkHandleUtils {
             } else {
                 listener?.onFailed(await.code(), await.message())
             }
+            if (isShowLoading) {
+                ThreadUtils.runOnUiThread {
+                    NetWorkManager.getConfig().loadingProvider?.dismissLoading()
+                }
+            }
+            listener?.onFinish()
         }
     }
 }

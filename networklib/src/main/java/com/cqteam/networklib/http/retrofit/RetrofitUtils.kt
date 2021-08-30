@@ -1,8 +1,6 @@
 package com.cqteam.networklib.http.retrofit
 
-import com.cqteam.networklib.NetWorkManager
 import com.cqteam.networklib.http.okhttp.OkHttpClientProvider
-import com.cqteam.networklib.http.utils.NetPrintUtil
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
@@ -15,49 +13,31 @@ import java.util.*
  */
 internal object RetrofitUtils {
     private val retorfitMap = HashMap<String, Retrofit>()
-    private var mainService: String? = null
 
     /**
      * 防止可能有多个BaseUr
-     * 第一个baseService是住要的,[RetrofitUtils]getRetrofit方法会返回这个主要的serivce的对象
      * @param baseService
      */
-    fun putApi(baseService: String?) : Retrofit{
-        if (mainService == null) {
-            mainService = baseService
-        }
-        var retrofit = retorfitMap[baseService]
+    private fun putApi(serviceUrl: String) : Retrofit{
+        var retrofit = retorfitMap[serviceUrl]
         if (retrofit != null) return retrofit
         retrofit = Retrofit.Builder()
-            .baseUrl(baseService)
+            .baseUrl(serviceUrl)
             .addConverterFactory(NullOnEmptyConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkHttpClientProvider.getClient())
             .build()
-        retorfitMap[baseService!!] = retrofit
+        retorfitMap[serviceUrl] = retrofit
         return retrofit
     }
 
-    fun putBaseApi( baseApi : String){
-        mainService = baseApi
-        putApi(baseApi)
-    }
-
-    /**
-     * 获取默认的
-     * @return
-     */
-    fun getRetrofit(): Retrofit{
-        return getRetrofit(mainService)
-    }
 
     /**
      * 根据baseService获取
      * @param baseService
      * @return
      */
-    fun getRetrofit(baseService: String?): Retrofit {
-        val retrofit = retorfitMap[baseService] ?: return putApi(baseService)
-        return retrofit!!
+    fun getRetrofit(baseService: String): Retrofit {
+        return retorfitMap[baseService] ?: return putApi(baseService)
     }
 }

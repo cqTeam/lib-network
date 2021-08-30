@@ -3,7 +3,6 @@ package com.cqteam.networklib.http.okhttp.cache
 import com.cqteam.networklib.NetWorkManager
 import okhttp3.Interceptor
 import okhttp3.Response
-import okhttp3.internal.cache.CacheStrategy
 
 /**
  *

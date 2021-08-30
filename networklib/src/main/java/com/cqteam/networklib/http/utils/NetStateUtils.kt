@@ -33,4 +33,14 @@ object NetStateUtils {
         }
         return current.isAvailable && isNetEffective
     }
+
+    suspend fun ping(pingAddress :String) : Boolean{
+        return try {
+            val exec = Runtime.getRuntime().exec("ping -c 3 -w 10 $pingAddress")
+            val status: Int = exec.waitFor()
+            status == 0
+        }catch (e:Exception){
+            false
+        }
+    }
 }
