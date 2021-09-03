@@ -6,6 +6,7 @@ package com.cqteam.network
  * @Author:         koloces
  * @CreateDate:     2020/8/14 16:14
  */
+@Deprecated("")
 data class BaseEntity<T> (
     val code: Int,
     val `data`: T,

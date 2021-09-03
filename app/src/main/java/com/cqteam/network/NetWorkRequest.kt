@@ -11,6 +11,7 @@ import retrofit2.Call
  * @Author:         koloces
  * @CreateDate:     2020/9/1 10:40
  */
+@Deprecated("")
 object NetWorkRequest {
 
     fun<T> request(call: Call<BaseEntity<T>>
