@@ -31,15 +31,16 @@ class HttpResult<T> private constructor() : Serializable {
         netJob = job
     }
 
-    internal fun setValue(data: T) {
+    internal fun setValue(data: T) : T {
         mValue = data
+        return data
     }
 
     internal fun onFailed(
         errorCode: Int,
         errorMsg: String,
         exception: Throwable? = null
-    ) : Failure {
+    ) :Failure{
         mValue = createFailure(errorCode, errorMsg, exception)
         return mValue as Failure
     }
@@ -96,21 +97,22 @@ public fun <T> requestAsync(block: suspend () -> BaseResponse<T>): HttpResult<T>
             block()
         }.onSuccess { data ->
             if (data.isSuccess()) {
+                create.setValue(data.getResponseData())
                 create.successBlock?.invoke(data.getResponseData())
             } else {
-                val invoke: Boolean? = create.failedBlock?.invoke(
-                    create.onFailed(
-                        data.getResponseCode(),
-                        data.getResponseMsg()
-                    )
+                val onFailed = create.onFailed(
+                    data.getResponseCode(),
+                    data.getResponseMsg()
                 )
+                val invoke: Boolean? = create.failedBlock?.invoke(onFailed)
                 if (invoke != null && !invoke) {
                     data.handleError()
                 }
             }
             create.finishedBlock?.invoke()
         }.onFailure {
-            create.failedBlock?.invoke(create.onFailed(-999, "Exception错误", it))
+            val onFailed = create.onFailed(-999, "Exception错误", it)
+            create.failedBlock?.invoke(onFailed)
             create.finishedBlock?.invoke()
         }
     }
