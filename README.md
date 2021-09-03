@@ -1,6 +1,7 @@
 # lib-network
-基于Kotlin对Okhttp3+Retrofit的使用封装
+基于Kotlin对Coroutines + Okhttp3 + Retrofit的使用封装
 ## 技术点
+* Coroutines
 * Okhttp3
 * Retrofit
 ## 集成
