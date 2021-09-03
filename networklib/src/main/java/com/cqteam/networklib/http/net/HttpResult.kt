@@ -73,7 +73,9 @@ public suspend fun <T> request(
                 return data.getResponseData()
             } else {
                 if (unHandError) {
-                    data.handleError()
+                    MainScope().launch {
+                        data.handleError()
+                    }
                 }
             }
         }.onFailure {
