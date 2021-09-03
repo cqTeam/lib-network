@@ -1,5 +1,6 @@
 package com.cqteam.network
 
+import com.cqteam.networklib.http.net.BaseResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -20,4 +21,9 @@ interface TestApi {
 
     @GET("weather")
     fun getWeather(): Call<BaseEntity<WeatherEntity>>
+
+    @FormUrlEncoded
+    @POST("start")
+    suspend fun startApp2(@Field("device_no") device_no: String = "XHFH0010000221"): APIResponse<StartEntity>
+
 }
