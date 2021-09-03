@@ -78,7 +78,7 @@ class App : Application() {
             }).build()
         NetWorkManager.init(
             build,
-            "http://test.hyzl.aitravit.com/api/hotelbox/" // 服务器IP
+            "http://xxx/api/hotelbox/" // 服务器IP
         )
     }
 
