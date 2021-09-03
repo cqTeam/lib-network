@@ -23,8 +23,8 @@ class HttpResult<T> private constructor() : Serializable {
     internal val isSuccess: Boolean get() = mValue != null && mValue !is Failure
     internal val isFailure: Boolean get() = mValue != null && mValue is Failure
 
-    public companion object {
-        public fun <T> create(): HttpResult<T> = HttpResult()
+    internal companion object {
+        internal fun <T> create(): HttpResult<T> = HttpResult()
     }
 
     internal fun setNetJob(job: Job) {
@@ -38,9 +38,10 @@ class HttpResult<T> private constructor() : Serializable {
     internal fun onFailed(
         errorCode: Int,
         errorMsg: String,
-        exception: Exception?
-    ) {
+        exception: Throwable? = null
+    ) : Failure {
         mValue = createFailure(errorCode, errorMsg, exception)
+        return mValue as Failure
     }
 
     fun cancelJob() {
@@ -98,7 +99,7 @@ public fun <T> requestAsync(block: suspend () -> BaseResponse<T>): HttpResult<T>
                 create.successBlock?.invoke(data.getResponseData())
             } else {
                 val invoke: Boolean? = create.failedBlock?.invoke(
-                    createFailure(
+                    create.onFailed(
                         data.getResponseCode(),
                         data.getResponseMsg()
                     )
@@ -109,7 +110,7 @@ public fun <T> requestAsync(block: suspend () -> BaseResponse<T>): HttpResult<T>
             }
             create.finishedBlock?.invoke()
         }.onFailure {
-            create.failedBlock?.invoke(createFailure(-999, "Exception错误", it))
+            create.failedBlock?.invoke(create.onFailed(-999, "Exception错误", it))
             create.finishedBlock?.invoke()
         }
     }
