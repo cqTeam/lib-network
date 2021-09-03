@@ -118,7 +118,7 @@ public fun <T> requestAsync(block: suspend () -> BaseResponse<T>): HttpResult<T>
     return create
 }
 
-public fun createFailure(
+internal fun createFailure(
     errorCode: Int,
     errorMsg: String,
     exception: Throwable? = null
@@ -153,7 +153,7 @@ public inline fun <T> HttpResult<T>.onStart(action: () -> Unit): HttpResult<T> {
 }
 
 public fun <T> HttpResult<T>.onFinished(action: () -> Unit): HttpResult<T> {
-    if (isFailure) {
+    if (isFinished) {
         action.invoke()
     } else {
         finishedBlock = action
