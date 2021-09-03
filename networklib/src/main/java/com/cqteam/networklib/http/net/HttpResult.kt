@@ -63,7 +63,7 @@ class HttpResult<T> private constructor() : Serializable {
 /**
  * @param unHandError true 则不执行[BaseResponse.handleError]方法,默认false
  */
-public suspend fun <T> request(
+public suspend inline fun <T> request(
     block: suspend () -> BaseResponse<T>,
     unHandError: Boolean = false
 ): T? {
