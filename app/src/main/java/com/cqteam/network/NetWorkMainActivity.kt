@@ -42,11 +42,6 @@ class NetWorkMainActivity : AppCompatActivity() {
         }.onFinished {
             Print.e("onFinished----->")
         }
-        GlobalScope.launch {
-            delay(10)
-            request.cancel()
-        }
-
     }
 
     private fun weather() {

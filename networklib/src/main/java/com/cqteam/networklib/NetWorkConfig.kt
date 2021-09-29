@@ -52,6 +52,9 @@ class NetWorkConfig private constructor(builder: Builder) {
     //缓存时间
     internal var maxAge: Long = 60
 
+    //是否需要忽略HTTPS证书
+    internal var isNeedIgnoreHttps = false;
+
     lateinit var mContext: Context
 
     init {
@@ -76,6 +79,7 @@ class NetWorkConfig private constructor(builder: Builder) {
         loadingProvider = builder.loadingProvider
         enableCache = builder.enableCache
         cacheSize = builder.cacheSize
+        isNeedIgnoreHttps = builder.isNeedIgnoreHttps
         mContext = builder.mContext
     }
 
@@ -114,11 +118,22 @@ class NetWorkConfig private constructor(builder: Builder) {
         //缓存时间
         internal var maxAge: Int = 60
 
+        //是否需要忽略HTTPS证书
+        internal var isNeedIgnoreHttps: Boolean = false
+
         /**
          * 添加吐司
          */
         fun addToastProvider(toastProvider: ToastProvider?): Builder {
             this.toastProvider = toastProvider
+            return this
+        }
+
+        /**
+         * 是否需要忽略HTTPS证书
+         */
+        fun isNeedIgnoreHttps(boolean: Boolean) : Builder{
+            this.isNeedIgnoreHttps = boolean
             return this
         }
 
