@@ -1,5 +1,6 @@
 package com.cqteam.networklib
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.cqteam.networklib.http.retrofit.RetrofitUtils
 
@@ -10,6 +11,7 @@ import com.cqteam.networklib.http.retrofit.RetrofitUtils
  * @CreateDate:     2020/6/10 14:43
  */
 object NetWorkManager {
+    @SuppressLint("StaticFieldLeak")
     private lateinit var mConfig : NetWorkConfig
     private lateinit var baseApi:String
 

@@ -124,6 +124,7 @@ class NetWorkConfig private constructor(builder: Builder) {
         /**
          * 添加吐司
          */
+        @Deprecated("弃用")
         fun addToastProvider(toastProvider: ToastProvider?): Builder {
             this.toastProvider = toastProvider
             return this

@@ -6,6 +6,7 @@ package com.cqteam.networklib.`interface`
  * @Author:         koloces
  * @CreateDate:     2020/6/10 16:14
  */
+@Deprecated("弃用")
 interface LoadingProvider {
     fun showLoading()
     fun dismissLoading()

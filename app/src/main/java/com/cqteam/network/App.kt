@@ -26,6 +26,7 @@ class App : Application() {
         val build = NetWorkConfig.Builder(this)
             .isDebug(true)
             .enableCache(true)//是否起用缓存 仅对GET有效
+            .isNeedIgnoreHttps(true)
             .addCacheDirectory(this.cacheDir)//添加缓存文件夹
             .setMaxAge(60)//缓存时间 秒
             .setCacheSize(10 * 1024 * 1024)//设置缓存文件夹大小 10M
@@ -78,7 +79,8 @@ class App : Application() {
             }).build()
         NetWorkManager.init(
             build,
-            "http://xxx/api/hotelbox/" // 服务器IP
+            "http://test3.aitravit.com/api/hotelbox/scanauth/" // 服务器IP
+//            "http://test.hyzl.aitravit.com/api/hotelbox/" // 服务器IP
         )
     }
 
