@@ -38,7 +38,6 @@ class NetWorkMainActivity : AppCompatActivity() {
         }.onFailure {
             Print.e("failure----->${it}")
             Toast.makeText(this, "失败", Toast.LENGTH_LONG).show()
-            return@onFailure true
         }.onFinished {
             Print.e("onFinished----->")
         }
@@ -73,7 +72,6 @@ class NetWorkMainActivity : AppCompatActivity() {
         }.onFailure {
             Print.e("onFailure--------->$it")
             Toast.makeText(this,"下载失败",Toast.LENGTH_SHORT).show()
-            return@onFailure false
         }.onFinished {
             Print.e("onFinished--------->")
             Toast.makeText(this,"下载结束",Toast.LENGTH_SHORT).show()
