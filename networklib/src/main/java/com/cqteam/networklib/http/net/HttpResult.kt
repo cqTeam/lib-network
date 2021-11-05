@@ -21,7 +21,7 @@ class HttpResult<T> private constructor() : Serializable {
     internal var mValue: Any? = null
     private var netJob: Job? = null
     internal var successBlock: ((value: T) -> Unit)? = null
-    internal var failedBlock: ((value: Failure) -> Boolean)? = null
+    internal var failedBlock: ((value: Failure) -> Unit)? = null
     internal var finishedBlock: (() -> Unit)? = null
     internal var progressBlock: ((total : Long,currentProgress : Long) -> Unit)? = null
 
@@ -113,10 +113,8 @@ public fun <T> requestAsync(block: suspend () -> BaseResponse<T>): HttpResult<T>
                     data.getResponseCode(),
                     data.getResponseMsg()
                 )
-                val invoke: Boolean? = create.failedBlock?.invoke(onFailed)
-                if (invoke != null && !invoke) {
-                    data.handleError()
-                }
+                data.handleError()
+                create.failedBlock?.invoke(onFailed)
             }
             create.finishedBlock?.invoke()
         }.onFailure {
@@ -290,7 +288,7 @@ internal fun createFailure(
 /**
  * @param action 返回为 true 说明拦截，则不执行[BaseResponse.handleError]方法
  */
-public fun <T> HttpResult<T>.onFailure(action: (value: HttpResult.Failure) -> Boolean): HttpResult<T> {
+public fun <T> HttpResult<T>.onFailure(action: (value: HttpResult.Failure) -> Unit): HttpResult<T> {
     if (isFailure) {
         action.invoke(mValue as HttpResult.Failure)
     } else {
