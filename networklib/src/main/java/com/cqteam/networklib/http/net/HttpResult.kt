@@ -67,9 +67,6 @@ class HttpResult<T> private constructor() : Serializable {
     }
 }
 
-/**
- * @param unHandError true 则不执行[BaseResponse.handleError]方法,默认false
- */
 public suspend inline fun <T> request(
     block: suspend () -> BaseResponse<T>,
     unHandError: Boolean = false
@@ -285,9 +282,7 @@ internal fun createFailure(
     HttpResult.Failure(errorCode, errorMsg, exception)
 
 
-/**
- * @param action 返回为 true 说明拦截，则不执行[BaseResponse.handleError]方法
- */
+
 public fun <T> HttpResult<T>.onFailure(action: (value: HttpResult.Failure) -> Unit): HttpResult<T> {
     if (isFailure) {
         action.invoke(mValue as HttpResult.Failure)
