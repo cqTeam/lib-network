@@ -9,7 +9,10 @@ import com.cqteam.networklib.http.net.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import org.intellij.lang.annotations.Flow
 import java.io.File
 
 class NetWorkMainActivity : AppCompatActivity() {
@@ -28,6 +31,7 @@ class NetWorkMainActivity : AppCompatActivity() {
     }
 
     private fun start() {
+
         val request = requestAsync {
             api.startApp2()
         }.onStart {
